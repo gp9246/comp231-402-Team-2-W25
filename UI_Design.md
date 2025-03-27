@@ -4,14 +4,14 @@
 ## Rating interface (rating criteria and scoring system)
 ![rating_interface](img/rating.png)
 
-### Moderator dashboard - report management
+## Moderator dashboard - report management
 ![moderator dashboard](img/reportManagement.jpg)
 
-### Moderator dashboard - flagged content
+## Moderator dashboard - flagged content
 ![moderator dashboard](img/reviewFlaggedContent.jpg)
 ![moderator dashboard](img/editFlaggedContent.jpg)
 
-### Identify configurable system-wide preferences
+## Identify configurable system-wide preferences
 System Settings
 - Theme: Light Mode / Dark Mode  
 - Default Language: English  
