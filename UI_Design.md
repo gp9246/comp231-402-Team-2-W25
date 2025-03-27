@@ -5,8 +5,11 @@
 ![rating_interface](img/rating.png)
 
 ### UI - moderator dashboard - moderator
+![moderator dashboard](img/reportManagement.jpg)
 
 ### UI - reviewing flagged content - moderator
+![moderator dashboard](img/reviewFlaggedContent.jpg)
+![moderator dashboard](img/editFlaggedContent.jpg)
 
 ### DF - identify platform settings management - administrator
 
