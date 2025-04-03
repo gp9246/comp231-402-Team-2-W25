@@ -110,7 +110,7 @@ const Sidebar = () => {
                   Seyeon Jo
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Administrator
+                  Admin
                 </Typography>
               </Box>
             </Box>
@@ -183,14 +183,14 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
-            {/* <Typography
+            <Typography
               variant="h6"
               color={colors.grey[300]}
               sx={{ m: "15px 0 5px 20px" }}
             >
               Charts
             </Typography>
-            <Item
+            {/* <Item
               title="Bar Chart"
               to="/bar"
               icon={<BarChartOutlinedIcon />}
@@ -203,15 +203,15 @@ const Sidebar = () => {
               icon={<PieChartOutlineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
             <Item
-              title="Line Chart"
+              title="Statistics"
               to="/line"
               icon={<TimelineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
+            {/* <Item
               title="Geography Chart"
               to="/geography"
               icon={<MapOutlinedIcon />}

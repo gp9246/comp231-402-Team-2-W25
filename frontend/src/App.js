@@ -5,6 +5,7 @@ import Sidebar from "./scenes/global/Sidebar";
 import Team from "./scenes/team";
 import Invoices from "./scenes/invoices";
 import Contacts from "./scenes/contacts";
+import Line from "./scenes/line";
 import Form from "./scenes/form";
 import FAQ from "./scenes/faq";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -29,6 +30,7 @@ function App() {
               <Route path="/contacts" element={<Contacts />} />
               <Route path="/" element={<Invoices />} />
               <Route path="/form" element={<Form />} />
+              <Route path="/line" element={<Line />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/calendar" element={<Calendar />} />
             </Routes>
