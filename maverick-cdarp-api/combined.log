@@ -1,0 +1,5 @@
+{"level":"info","message":"User registered: johnsnow (johnsnow@gmail.com)"}
+{"level":"info","message":"User registered: johnsnow (johnsnow@gmail.com)"}
+{"level":"info","message":"User logged in: johnsnow@gmail.com"}
+{"level":"info","message":"User logged in: johnsnow@gmail.com"}
+{"level":"warn","message":"User registration validation failed: [{\"type\":\"field\",\"value\":\"NOTVALID\",\"msg\":\"Invalid email\",\"path\":\"email\",\"location\":\"body\"}]"}

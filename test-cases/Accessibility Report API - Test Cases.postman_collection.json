@@ -1,0 +1,1126 @@
+{
+	"info": {
+		"_postman_id": "fe883b4f-cbf8-4c16-acaf-535de83eb598",
+		"name": "Accessibility Report API - Test Cases",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "43964281"
+	},
+	"item": [
+		{
+			"name": "Registration",
+			"item": [
+				{
+					"name": "Register User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"  pm.expect(pm.response.code).to.equal(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the structure of the user object\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.user).to.be.an('object');",
+									"    pm.expect(responseData.user.settings).to.be.an('object');",
+									"    pm.expect(responseData.user.role).to.be.a('string');",
+									"    pm.expect(responseData.user.banned).to.be.a('boolean');",
+									"    pm.expect(responseData.user._id).to.be.a('string');",
+									"    pm.expect(responseData.user.username).to.be.a('string');",
+									"    pm.expect(responseData.user.email).to.be.a('string');",
+									"    pm.expect(responseData.user.createdAt).to.be.a('string');",
+									"    pm.expect(responseData.user.updatedAt).to.be.a('string');",
+									"    pm.expect(responseData.user.__v).to.be.a('number');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Settings object within user has the correct structure\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.user.settings).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.user.settings.darkMode).to.exist.and.to.be.a('boolean');",
+									"    pm.expect(responseData.user.settings.language).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message field is empty\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData.message).to.be.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"P@ssw0rd123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/auth/register"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report management (reporter)",
+			"item": [
+				{
+					"name": "Reporter Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"if (response.token) {",
+									"    pm.collectionVariables.set(\"auth_token\", response.token);",
+									"} else {",
+									"    console.error(\"Token not found in response\");",
+									"}",
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the user object\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData.user).to.be.an('object');",
+									"    pm.expect(responseData.user.settings).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.user.role).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.banned).to.exist.and.to.be.a('boolean');",
+									"    pm.expect(responseData.user._id).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.username).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.email).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.password).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.createdAt).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.updatedAt).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.__v).to.exist.and.to.be.a('number');",
+									"    pm.expect(responseData.token).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Settings object is present and contains expected fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.user.settings).to.exist.and.to.be.an('object');",
+									"  pm.expect(responseData.user.settings.darkMode).to.exist.and.to.be.a('boolean');",
+									"  pm.expect(responseData.user.settings.language).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Token is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"reporter@example.com\",\n  \"password\": \"P@ssw0rd123\"\n}"
+						},
+						"url": "{{base_url}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is an array\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('array');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response schema validation for the array structure and data types\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').that.is.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": "{{base_url}}/reports"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Public Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is an array\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('array');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response schema validation for the array structure and data types\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').that.is.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": "{{base_url}}/reports/public"
+					},
+					"response": []
+				},
+				{
+					"name": "Submit a Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist;",
+									"    pm.expect(responseData.report).to.exist;",
+									"    pm.expect(responseData.flagged).to.exist;",
+									"    pm.expect(responseData.userId).to.exist;",
+									"    pm.expect(responseData.websiteUrl).to.exist;",
+									"    pm.expect(responseData.accessibilityScore).to.exist;",
+									"    pm.expect(responseData.reportDetails).to.exist;",
+									"    pm.expect(responseData.createdAt).to.exist;",
+									"    pm.expect(responseData.updatedAt).to.exist;",
+									"    pm.expect(responseData.__v).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Flagged is a boolean value\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.flagged).to.be.a('boolean');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Accessibility score is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.accessibilityScore).to.be.a('number');",
+									"    pm.expect(responseData.accessibilityScore).to.be.at.least(0);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Report details issue is a non-empty string\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.report.reportDetails.issue).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Value should not be empty\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"websiteUrl\": \"https://example.com\",\n  \"accessibilityScore\": 4.2,\n  \"reportDetails\": {\n    \"issue\": \"Text is in colours that are difficult to read.\"\n  }\n}"
+						},
+						"url": "{{base_url}}/reports"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User management (admin)",
+			"item": [
+				{
+					"name": "Admin Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"if (response.token) {",
+									"    pm.collectionVariables.set(\"auth_token\", response.token);",
+									"} else {",
+									"    console.error(\"Token not found in response\");",
+									"}",
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the user object\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData.user).to.be.an('object');",
+									"    pm.expect(responseData.user.settings).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.user.role).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.banned).to.exist.and.to.be.a('boolean');",
+									"    pm.expect(responseData.user._id).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.username).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.email).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.password).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.createdAt).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.updatedAt).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.__v).to.exist.and.to.be.a('number');",
+									"    pm.expect(responseData.token).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Settings object is present and contains expected fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.user.settings).to.exist.and.to.be.an('object');",
+									"  pm.expect(responseData.user.settings.darkMode).to.exist.and.to.be.a('boolean');",
+									"  pm.expect(responseData.user.settings.language).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Token is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"johnsnow@gmail.com\",\n  \"password\": \"P@ssw0rd123\"\n}"
+						},
+						"url": "{{base_url}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is an array\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('array');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response schema validation for the array structure and data types\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').that.is.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": "{{base_url}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Add User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"if (response.user) {",
+									"    pm.collectionVariables.set(\"user_id\", response.user._id);",
+									"} else {",
+									"    console.error(\"User not found in response\");",
+									"}",
+									"",
+									"pm.test(\"Response status code is 201\", function () {",
+									"  pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist;",
+									"    pm.expect(responseData.user).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.user.settings).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.role).to.exist;",
+									"    pm.expect(responseData.banned).to.exist;",
+									"    pm.expect(responseData._id).to.exist;",
+									"    pm.expect(responseData.username).to.exist;",
+									"    pm.expect(responseData.email).to.exist;",
+									"    pm.expect(responseData.createdAt).to.exist;",
+									"    pm.expect(responseData.updatedAt).to.exist;",
+									"    pm.expect(responseData.__v).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Settings object contains darkMode as a boolean and language as a string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.settings).to.be.an('object');",
+									"    pm.expect(responseData.settings.darkMode).to.be.a('boolean');",
+									"    pm.expect(responseData.settings.language).to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"User object properties validation\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.user).to.be.an('object');",
+									"    ",
+									"    pm.expect(responseData.user.role).to.be.a('string');",
+									"    pm.expect(responseData.user.banned).to.be.a('boolean');",
+									"    ",
+									"    Object.keys(responseData.user).forEach(key => {",
+									"        if (key !== 'role' && key !== 'banned') {",
+									"            pm.expect(responseData.user[key]).to.not.be.empty;",
+									"        }",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"test3-delete-me\",\n  \"email\": \"test3-delete-me@example.com\",\n  \"password\": \"Str0ngP@ssw0rd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/auth/admin/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is an array\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('array');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response schema validation for the array structure and data types\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').that.is.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": "{{base_url}}/users/{{user_id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Reports (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/reports/admin"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Flagged Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is an array\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('array');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response schema validation for the array structure and data types\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').that.is.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": "{{base_url}}/reports/flagged"
+					},
+					"response": []
+				},
+				{
+					"name": "Flag Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist;",
+									"    pm.expect(responseData.report).to.exist;",
+									"    pm.expect(responseData.flagged).to.exist;",
+									"    pm.expect(responseData._id).to.exist;",
+									"    pm.expect(responseData.userId).to.exist;",
+									"    pm.expect(responseData.websiteUrl).to.exist;",
+									"    pm.expect(responseData.accessibilityScore).to.exist;",
+									"    pm.expect(responseData.reportDetails).to.exist;",
+									"    pm.expect(responseData.createdAt).to.exist;",
+									"    pm.expect(responseData.updatedAt).to.exist;",
+									"    pm.expect(responseData.__v).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Flagged field in report object is a boolean\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.report.flagged).to.be.a('boolean');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Accessibility score is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.report.accessibilityScore).to.be.a('number');",
+									"    pm.expect(responseData.report.accessibilityScore).to.be.at.least(0);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/reports/{{report_id}}/flag"
+					},
+					"response": []
+				},
+				{
+					"name": "Unflag Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist;",
+									"    pm.expect(responseData.report).to.exist;",
+									"    pm.expect(responseData.flagged).to.exist;",
+									"    pm.expect(responseData._id).to.exist;",
+									"    pm.expect(responseData.userId).to.exist;",
+									"    pm.expect(responseData.websiteUrl).to.exist;",
+									"    pm.expect(responseData.accessibilityScore).to.exist;",
+									"    pm.expect(responseData.reportDetails).to.exist;",
+									"    pm.expect(responseData.createdAt).to.exist;",
+									"    pm.expect(responseData.updatedAt).to.exist;",
+									"    pm.expect(responseData.__v).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Flagged field in report object is a boolean\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.report.flagged).to.be.a('boolean');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Accessibility score is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.report.accessibilityScore).to.be.a('number');",
+									"    pm.expect(responseData.report.accessibilityScore).to.be.at.least(0);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/reports/{{report_id}}/unflag"
+					},
+					"response": []
+				},
+				{
+					"name": "Settings",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"darkMode\": true,\n  \"language\": \"en-ca\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/settings"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Content management (moderator)",
+			"item": [
+				{
+					"name": "Moderator Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"if (response.token) {",
+									"    pm.collectionVariables.set(\"auth_token\", response.token);",
+									"} else {",
+									"    console.error(\"Token not found in response\");",
+									"}",
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the user object\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData.user).to.be.an('object');",
+									"    pm.expect(responseData.user.settings).to.exist.and.to.be.an('object');",
+									"    pm.expect(responseData.user.role).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.banned).to.exist.and.to.be.a('boolean');",
+									"    pm.expect(responseData.user._id).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.username).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.email).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.password).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.createdAt).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.updatedAt).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.user.__v).to.exist.and.to.be.a('number');",
+									"    pm.expect(responseData.token).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Settings object is present and contains expected fields\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData).to.be.an('object');",
+									"  pm.expect(responseData.user.settings).to.exist.and.to.be.an('object');",
+									"  pm.expect(responseData.user.settings.darkMode).to.exist.and.to.be.a('boolean');",
+									"  pm.expect(responseData.user.settings.language).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Token is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"moderator@example.com\",\n  \"password\": \"P@ssw0rd123\"\n}"
+						},
+						"url": "{{base_url}}/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Flagged Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response Content-Type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response body is an array\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData).to.be.an('array');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is within an acceptable range\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response schema validation for the array structure and data types\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('array').that.is.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": "{{base_url}}/reports/flagged"
+					},
+					"response": []
+				},
+				{
+					"name": "Flag Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.message).to.exist;",
+									"    pm.expect(responseData.report).to.exist;",
+									"    pm.expect(responseData.flagged).to.exist;",
+									"    pm.expect(responseData._id).to.exist;",
+									"    pm.expect(responseData.userId).to.exist;",
+									"    pm.expect(responseData.websiteUrl).to.exist;",
+									"    pm.expect(responseData.accessibilityScore).to.exist;",
+									"    pm.expect(responseData.reportDetails).to.exist;",
+									"    pm.expect(responseData.createdAt).to.exist;",
+									"    pm.expect(responseData.updatedAt).to.exist;",
+									"    pm.expect(responseData.__v).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Flagged field in report object is a boolean\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.report.flagged).to.be.a('boolean');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Accessibility score is a non-negative integer\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.report.accessibilityScore).to.be.a('number');",
+									"    pm.expect(responseData.report.accessibilityScore).to.be.at.least(0);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/reports/{{report_id}}/flag"
+					},
+					"response": []
+				},
+				{
+					"name": "Ban User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/users/{{user_id}}/ban"
+					},
+					"response": []
+				},
+				{
+					"name": "Unban User Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/users/{{user_id}}/unban"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "auth_token",
+			"value": ""
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "report_id",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
