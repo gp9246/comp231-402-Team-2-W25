@@ -55,7 +55,7 @@ const Contacts = () => {
   return (
     <Box m="20px">
       <Header
-        title="Report Management"
+        title="Reporter Management"
       />
       <Box
         m="40px 0 0 0"
