@@ -44,7 +44,7 @@ const Invoices = () => {
 
   return (
     <Box m="20px">
-      <Header title="Reporter Management" />
+      <Header title="Dashboard" />
       <Box
         m="40px 0 0 0"
         height="75vh"

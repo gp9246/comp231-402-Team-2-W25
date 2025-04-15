@@ -140,7 +140,7 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Reporter"
+              title="Report"
               to="/contacts"
               icon={<ContactsOutlinedIcon />}
               selected={selected}
